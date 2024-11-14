@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chingu food Restaurant Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    /* Global Styles */
+    header {
+      background-color:#333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .carousel-container {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .carousel {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .carousel-button.left {
+      left: 10px;
+    }
+
+    .carousel-button.right {
+      right: 10px;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .carousel img {
+        height: 300px;
+      }
+    }
+
+    /* Quiz Section */
+    .quiz-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+
+    .answers {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .answers li {
+      padding: 10px;
+      background-color: #f4f4f4;
+      margin: 5px 0;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .answers li:hover {
+      background-color: #eaeaea;
+    }
+
+    .result {
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+
+    /* Food Order Section */
+    .order-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    .order-container select,
+    .order-container input {
+      padding: 8px;
+      font-size: 1em;
+      margin: 5px 0;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+
+    .order-container button {
+      padding: 10px 20px;
+      background-color: #ff5733;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .order-container button:hover {
+      background-color: #ff4500;
+    }
+
+    /* Joke Section */
+    .joke-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    .joke-button {
+      background-color: #ff5733;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .joke-button:hover {
+      background-color: #ff4500;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      color: white;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to Delicious Dining</h1>
+    <p>Discover mouth-watering food and more!</p>
+  </header>
+
+  <div class="container">
+    <!-- Image Carousel -->
+    <div class="carousel-container">
+      <div class="carousel">
+        <img src="https://images7.alphacoders.com/358/358131.jpg" alt="Dish 1">
+        <img src="https://img.freepik.com/free-photo/grilled-beef-burger-with-fries-cheese-tomato-generative-ai_188544-8466.jpg" alt="Dish 2">
+        <img src="https://c4.wallpaperflare.com/wallpaper/234/543/684/food-pizza-wallpaper-preview.jpg" alt="Dish 3">
+        <img src="https://rajcabin.com/wp-content/uploads/2022/11/60f2ea67b471327a1d82959b_chicken-roll_1500-x-1200.jpg" alt="Dish 4">
+      </div>
+      <button class="carousel-button left" onclick="prevSlide()">&#10094;</button>
+      <button class="carousel-button right" onclick="nextSlide()">&#10095;</button>
+    </div>
+    <!-- Food Order Section -->
+    <div class="order-container">
+      <h2>Order Your Favorite Dish</h2>
+      <form id="food-order-form">
+        <label for="food-item">Select Food Item:</label>
+        <select id="food-item" name="food-item" required>
+          <option value="Pizza">Pizza</option>
+          <option value="Pasta">Pasta</option>
+          <option value="Sushi">Sushi</option>
+          <option value="Burger">Burger</option>
+          <option value="Salad">Salad</option>
+        </select>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" min="1" max="10" value="1" required>
+
+        <button type="submit">Place Order</button>
+      </form>
+      <div id="order-result"></div>
+    </div><br>
+
+    <!-- Interactive Quiz -->
+    <div class="quiz-container">
+      <h2>Food Quiz</h2>
+      <div id="quiz">
+        <div class="question" id="question-text">What is the main ingredient in sushi?</div>
+        <ul class="answers" id="answers-list">
+          <li onclick="checkAnswer('a')">Rice</li>
+          <li onclick="checkAnswer('b')">Pasta</li>
+          <li onclick="checkAnswer('c')">Chicken</li>
+          <li onclick="checkAnswer('d')">Potato</li>
+        </ul>
+        <div id="quiz-result" class="result"></div>
+      </div>
+      <button id="next-question-button" onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    
+
+    <!-- Joke Section -->
+    <div class="joke-container">
+      <h2>Food Joke of the Day</h2>
+      <p id="joke-text">Click the button to get a food joke!</p>
+      <button class="joke-button" onclick="fetchJoke()">Get Joke</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Delicious Dining. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Carousel JavaScript
+    let currentSlide = 0;
+    const carouselImages = document.querySelectorAll('.carousel img');
+
+    function showSlide(index) {
+      const totalSlides = carouselImages.length;
+      if (index < 0) {
+        currentSlide = totalSlides - 1;
+      } else if (index >= totalSlides) {
+        currentSlide = 0;
+      } else {
+        currentSlide = index;
+      }
+      const carousel = document.querySelector('.carousel');
+      carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function nextSlide() {
+      showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      showSlide(currentSlide - 1);
+    }
+
+    // Quiz JavaScript
+    const questions = [
+      {
+        question: "What is the main ingredient in sushi?",
+        options: ["Rice", "Pasta", "Chicken", "Potato"],
+        correctAnswer: 'a'
+      },
+      
+      {
+        question: "What type of cheese is used in a traditional Greek salad?",
+        options: ["Feta", "Mozzarella", "Cheddar", "Swiss"],
+        correctAnswer: 'a'
+      },
+      {
+        question: "Which of these is a popular Italian dish?",
+        options: ["Tacos", "Pizza", "Sushi", "Kebab"],
+        correctAnswer: 'b'
+      },
+      {
+        question: "What vegetable is known for turning purple when cooked?",
+        options: ["Carrot", "Eggplant", "Potato", "Lettuce"],
+        correctAnswer: 'b'
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    function loadQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      document.getElementById("question-text").textContent = currentQuestion.question;
+      const answersList = document.getElementById("answers-list");
+      answersList.innerHTML = '';
+      currentQuestion.options.forEach((option, index) => {
+        const li = document.createElement("li");
+        li.textContent = option;
+        li.onclick = () => checkAnswer(String.fromCharCode(97 + index));
+        answersList.appendChild(li);
+      });
+      document.getElementById("quiz-result").textContent = '';
+    }
+
+    function checkAnswer(answer) {
+      const currentQuestion = questions[currentQuestionIndex];
+      const resultText = document.getElementById('quiz-result');
+      if (answer === currentQuestion.correctAnswer) {
+        resultText.textContent = 'Correct!';
+        resultText.style.color = 'green';
+      } else {
+        resultText.textContent = `Oops! answer is wrong`;
+        resultText.style.color = 'red';
+      }
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+      loadQuestion();
+    }
+
+    // Joke API Fetch
+    async function fetchJoke() {
+      try {
+        const response = await fetch('https://v2.jokeapi.dev/joke/Any?category=Miscellaneous&type=single');
+        const data = await response.json();
+        const jokeText = data.joke || "No joke found!";
+        document.getElementById('joke-text').textContent = jokeText;
+      } catch (error) {
+        console.error('Error fetching joke:', error);
+        document.getElementById('joke-text').textContent = 'Oops! Something went wrong.';
+      }
+    }
+
+    // Order Form Submit
+    const orderForm = document.getElementById('food-order-form');
+    orderForm.addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent page reload
+
+      const foodItem = document.getElementById('food-item').value;
+      const quantity = document.getElementById('quantity').value;
+      const orderResult = document.getElementById('order-result');
+
+      // Display the order details
+      orderResult.innerHTML = `<p>You've successfully ordered ${quantity} x ${foodItem}!</p>`;
+      orderForm.reset();
+    });
+
+    // Initial setup
+    loadQuestion();
+  </script>
+</body>
+</html>
